@@ -1,11 +1,44 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>Старница пользователя</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
-
-
+<table th:align="center" th:border="0" th:width="400">
+    <caption><h2>Старница пользователя</h2></caption>
+    <tr>
+        <th th:align="right" valign="top">ID</th>
+        <th th:align="left"><div th:text="${user.getId()}"></div></th>
+    </tr>
+    <tr>
+        <th th:align="right" valign="top">Имя</th>
+        <th th:align="left"><div th:text="${user.getName()}"></div></th>
+    </tr>
+    <tr>
+        <th th:align="right" valign="top">Фамилия</th>
+        <th th:align="left"><div th:text="${user.getSurname()}"></div></th>
+    </tr>
+    <tr>
+        <th th:align="right" valign="top">Возраст</th>
+        <th th:align="left"><div th:text="${user.getAge()}"></div></th>
+    </tr>
+    <tr>
+        <th th:align="right" valign="top">Телефон</th>
+        <th th:align="left"><div th:text="${user.getPhoneNumber()}"></div></th>
+    </tr>
+    <tr>
+        <th th:align="right" valign="top">Email</th>
+        <th th:align="left"><div th:text="${user.getEmail()}"></div></th>
+    </tr>
+    <tr>
+        <th th:align="right" valign="top">Username</th>
+        <th th:align="left"><div th:text="${user.getUsername()}"></div></th>
+    </tr>
+    <tr>
+        <th th:align="center" th:colspan="2"><h3><a href="/logout">Logout</a></h3></th>
+    </tr>
+</table>
 </body>
 </html>
