@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +18,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Data
 @Table(name = "users_table")
 public class User implements UserDetails {
 
@@ -51,9 +49,11 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "username")
-    private String username;
+    @NotEmpty(message = "Username не может быть пустой")
+    @Column(name = "user_name")
+    private String userName;
 
+    @NotEmpty(message = "Password не может быть пустой")
     @Column(name = "password")
     private String password;
 
@@ -70,13 +70,14 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String surname, int age, String phoneNumber, String email, String username, String password) {
+
+    public User(String name, String surname, int age, String phoneNumber, String email, String userName, String password) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.username = username;
+        this.userName = userName;
         this.password = password;
     }
 
@@ -84,9 +85,60 @@ public class User implements UserDetails {
         roles.add(role);
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String username) {
+        this.userName = username;
     }
 
     @Override
@@ -94,9 +146,34 @@ public class User implements UserDetails {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String getUsername() {
-        return username;
+        return userName;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
     }
 
     @Override
@@ -124,12 +201,12 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && name.equals(user.name) && surname.equals(user.surname) && phoneNumber.equals(user.phoneNumber) && email.equals(user.email);
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, age, phoneNumber, email);
+        return Objects.hash(id);
     }
 
     @Override

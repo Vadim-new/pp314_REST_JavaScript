@@ -9,7 +9,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 public class Encoder {
 
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(11);
     }
 
     public User passwordCoder(User user){

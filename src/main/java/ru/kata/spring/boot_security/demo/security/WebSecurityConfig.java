@@ -39,8 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     protected void configureGlobalSecurity(AuthenticationManagerBuilder auf) throws Exception {
-        DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserService> u = auf.userDetailsService(userService);
-        u.passwordEncoder(new BCryptPasswordEncoder());
+        DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserService> daoAuthenticationConfigurer = auf.userDetailsService(userService);
+        daoAuthenticationConfigurer.passwordEncoder(new BCryptPasswordEncoder());
 
     }
 }

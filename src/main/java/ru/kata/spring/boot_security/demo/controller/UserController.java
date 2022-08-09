@@ -23,7 +23,7 @@ public class UserController {
 
     @GetMapping()
     public String showPageUser(Principal principal, Model model) {
-        User user = userService.findByUsername(principal.getName());
+        User user = userService.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
         return "user";
     }
