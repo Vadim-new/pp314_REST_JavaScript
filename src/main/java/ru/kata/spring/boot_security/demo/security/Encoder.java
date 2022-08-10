@@ -12,7 +12,7 @@ public class Encoder {
         return new BCryptPasswordEncoder(11);
     }
 
-    public User passwordCoder(User user){
+    public User passwordCoder(User user) {
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         return user;
     }

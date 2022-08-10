@@ -6,18 +6,19 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
-    private UserService userService;
+    private final UserService userService;
+    private final Encoder encoder;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService, Encoder encoder) {
         this.successUserHandler = successUserHandler;
         this.userService = userService;
+        this.encoder = encoder;
     }
 
     @Override
@@ -37,10 +38,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
+    /*
+    Этот метод Spring security создает аутентификацию в памяти.
+    Вы можете назвать метод по своему вкусу. Единственные ограничения:
+    аннотируйте метод с помощью @Autowired
+    метод ДОЛЖЕН находиться в классе, аннотированном одним из следующих элементов: @ EnableWebSecurity, @ EnableWebMvcSecurity, @ EnableGlobalMethodSecurity или @ EnableGlobalAuthentication
+    (и, конечно, метод имеет аргумент типа AuthenticationManagerBuilder)
+    */
     @Autowired
-    protected void configureGlobalSecurity(AuthenticationManagerBuilder auf) throws Exception {
-        DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserService> daoAuthenticationConfigurer = auf.userDetailsService(userService);
-        daoAuthenticationConfigurer.passwordEncoder(new BCryptPasswordEncoder());
+    protected void configureGlobalSecurity(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserService> daoAuthenticationConfigurer = authenticationManagerBuilder.userDetailsService(userService);
+        daoAuthenticationConfigurer.passwordEncoder(encoder.passwordEncoder());
 
     }
 }

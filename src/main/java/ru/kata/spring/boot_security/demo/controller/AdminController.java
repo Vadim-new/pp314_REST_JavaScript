@@ -55,8 +55,8 @@ public class AdminController {
 
     @PatchMapping("/{id}")
     public String updateUserPatch(@ModelAttribute("user") @Valid User user,
-                                 BindingResult bindingResult, @PathVariable("id") int id,
-                                 @RequestParam("roles") int[] roles) {
+                                  BindingResult bindingResult, @PathVariable("id") int id,
+                                  @RequestParam("roles") int[] roles) {
         if (bindingResult.hasErrors()) return "editUser";
         user.setRoles(roleService.findAllRolesById(roles));
         userService.updateUser(id, user);

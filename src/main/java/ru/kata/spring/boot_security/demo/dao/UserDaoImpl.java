@@ -1,7 +1,7 @@
 package ru.kata.spring.boot_security.demo.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.security.Encoder;
 
@@ -16,7 +16,12 @@ public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private Encoder encoder = new Encoder();
+    private Encoder encoder;
+
+    @Autowired
+    public UserDaoImpl(Encoder encoder) {
+        this.encoder = encoder;
+    }
 
 
     @Override
@@ -33,7 +38,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByUserName(String username) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.userName =: username",User.class).setParameter("username", username).getSingleResult();
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.userName =: username", User.class).setParameter("username", username).getSingleResult();
     }
 
     @Override
