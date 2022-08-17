@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,14 +26,17 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String getAllUser(Model model) {
+    public String getAllUser(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.findAllRoles());
         return "users";
     }
 
     @GetMapping("/new")
-    public String addNewUserGet(@ModelAttribute("user") User user, Model model) {
+    public String addNewUserGet(@ModelAttribute("user") User user, @AuthenticationPrincipal User currentUser, Model model) {
         model.addAttribute("roles", roleService.findAllRoles());
+        model.addAttribute("currentUser", currentUser);
         return "newUser";
     }
 
@@ -45,19 +49,19 @@ public class AdminController {
         userService.saveUser(user);
         return "redirect:/admin";
     }
-
-    @GetMapping("/{id}/edit")
-    public String updateUserGet(@PathVariable("id") int id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "editUser";
-    }
+//
+//    @GetMapping("/{id}/edit")
+//    public String updateUserGet(@PathVariable("id") int id, Model model) {
+//        User user = userService.getUserById(id);
+//        model.addAttribute("user", user);
+//        return "editUser";
+//    }
 
     @PatchMapping("/{id}")
     public String updateUserPatch(@ModelAttribute("user") @Valid User user,
                                   BindingResult bindingResult, @PathVariable("id") int id,
                                   @RequestParam("roles") int[] roles) {
-        if (bindingResult.hasErrors()) return "editUser";
+//        if (bindingResult.hasErrors()) return "editUser";
         user.setRoles(roleService.findAllRolesById(roles));
         userService.updateUser(id, user);
         return "redirect:/admin";

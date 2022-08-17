@@ -24,17 +24,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf().disable()  //  отключаем защиту от межсайтовой подделки запросов!!!
                 .authorizeRequests()
+                .antMatchers("/auth/login", "/error").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+//                .formLogin()
+                .formLogin().loginPage("/auth/login")
+                .loginProcessingUrl("/process_login")
+                .defaultSuccessUrl("/index", true)
+                .failureUrl("/auth/login?error")
                 .successHandler(successUserHandler)
                 .permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/login")
+                .logout().logoutSuccessUrl("/auth/login")
                 .permitAll();
     }
 
@@ -42,12 +47,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     Этот метод Spring security создает аутентификацию в памяти.
     Вы можете назвать метод по своему вкусу. Единственные ограничения:
     аннотируйте метод с помощью @Autowired
-    метод ДОЛЖЕН находиться в классе, аннотированном одним из следующих элементов: @ EnableWebSecurity, @ EnableWebMvcSecurity, @ EnableGlobalMethodSecurity или @ EnableGlobalAuthentication
+    метод ДОЛЖЕН находиться в классе, аннотированном одним из следующих элементов:
+    @ EnableWebSecurity, @ EnableWebMvcSecurity, @ EnableGlobalMethodSecurity или @ EnableGlobalAuthentication
     (и, конечно, метод имеет аргумент типа AuthenticationManagerBuilder)
     */
     @Autowired
     protected void configureGlobalSecurity(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserService> daoAuthenticationConfigurer = authenticationManagerBuilder.userDetailsService(userService);
+        DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserService> daoAuthenticationConfigurer =
+                authenticationManagerBuilder.userDetailsService(userService);
         daoAuthenticationConfigurer.passwordEncoder(encoder.passwordEncoder());
 
     }
