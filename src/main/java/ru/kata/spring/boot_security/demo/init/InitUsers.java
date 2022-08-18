@@ -29,10 +29,10 @@ public class InitUsers {
         roleService.saveRole(adminRole);
         roleService.saveRole(userRole);
 
-        User admin = new User("Ivan", "Petrov", 35, "+7-495-456-98-87", "admin@email.ru", "admin", "admin");
+        User admin = new User("Ivan", "Petrov", 35, 4953456235L, "admin@email.ru", "admin", "admin");
         admin.addRole(adminRole);
 
-        User user = new User("Sergey", "Sidorov", 28, "+7-496-777-23-11", "user@email.ru", "user", "user");
+        User user = new User("Sergey", "Sidorov", 28, 4956683265L, "user@email.ru", "user", "user");
         user.addRole(userRole);
 
         userService.saveUser(admin);

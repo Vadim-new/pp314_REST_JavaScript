@@ -39,9 +39,8 @@ public class User implements UserDetails {
     @Column(name = "age", nullable = false)
     private int age;
 
-    @NotEmpty(message = "Номер телефона не может быть пустой")
     @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+    private long phoneNumber;
 
     @NotEmpty(message = "Email не может быть пустой")
     @Email(message = "Email указан не верно")
@@ -70,7 +69,7 @@ public class User implements UserDetails {
     }
 
 
-    public User(String name, String surname, int age, String phoneNumber, String email, String userName, String password) {
+    public User(String name, String surname, int age, long phoneNumber, String email, String userName, String password) {
         this.name = name;
         this.surname = surname;
         this.age = age;
@@ -116,11 +115,11 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public String getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
