@@ -10,5 +10,7 @@ public interface RoleService {
 
     Set<Role> findAllRolesById(int[] roles);
 
+    public Role findRoleById(int role);
+
     public Set<Role> findAllRoles();
 }

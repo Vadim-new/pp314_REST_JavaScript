@@ -6,8 +6,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.exception_handling.UserNotFoundException;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -28,12 +30,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(int id) {
-        return userDao.getUserById(id);
+        User getUser = userDao.getUserById(id);
+        if (getUser == null) {
+            throw new UserNotFoundException();
+        } else {
+            return getUser;
+        }
     }
 
     @Override
     public User getUserByUserName(String username) {
-        return userDao.getUserByUserName(username);
+        User getUser = userDao.getUserByUserName(username);
+        if (getUser == null) {
+            throw new UserNotFoundException();
+        } else {
+            return getUser;
+        }
     }
 
     @Override
@@ -45,13 +57,24 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(int id, User user) {
-        userDao.updateUser(id, user);
+
+        User getUser = userDao.getUserById(id);
+        if (getUser == null) {
+            throw new UserNotFoundException();
+        } else {
+            userDao.updateUser(id, user);
+        }
     }
 
     @Override
     @Transactional
     public void deleteUser(int id) {
-        userDao.deleteUser(id);
+        User getUser = userDao.getUserById(id);
+        if (getUser == null) {
+            throw new UserNotFoundException();
+        } else {
+            userDao.deleteUser(id);
+        }
     }
 
     @Override
