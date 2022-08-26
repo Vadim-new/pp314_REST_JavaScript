@@ -3,7 +3,7 @@ $(async function () {
 });
 
 async function thisUser() {
-    fetch("http://localhost:8081/api/viewUser")
+    fetch("/api/viewUser")
         .then(res => res.json())
         .then(data => {
             // Добавляем информацию в шапку

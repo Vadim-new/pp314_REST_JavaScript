@@ -14,7 +14,7 @@ function editUser() {
             })
         }
 
-        fetch("http://localhost:8081/api/users/" + editForm.id.value, {
+        fetch("/api/users/" + editForm.id.value, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

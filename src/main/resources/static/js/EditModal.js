@@ -19,7 +19,7 @@ async function showEditModal(id) {
 
     $('#editUserRoles').empty();
 
-    await fetch("http://localhost:8081/api/roles")
+    await fetch("/api/roles")
         .then(res => res.json())
         .then(roles => {
             roles.forEach(role => {

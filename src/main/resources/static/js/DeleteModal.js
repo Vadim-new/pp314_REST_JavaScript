@@ -19,7 +19,7 @@ async function showDeleteModal(id) {
 
     $('#deleteUserRoles').empty();
 
-    await fetch("http://localhost:8081/api/roles")
+    await fetch("/api/roles")
         .then(res => res.json())
         .then(roles => {
             roles.forEach(role => {
@@ -39,7 +39,7 @@ async function showDeleteModal(id) {
         });
 }
 async function getUser(id) {
-    let url = "http://localhost:8081/api/users/" + id;
+    let url = "/api/users/" + id;
     let response = await fetch(url);
     return await response.json();
 }
